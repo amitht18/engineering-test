@@ -7,7 +7,7 @@ export interface StaffState {
     filteredStudents: Person[];
     updateStudentRollState: (students: Person[], id: number, roll_state: RolllStateType) => void;
     updateStudents: (students: Person[]) => void;
-    filterStudentByAttendanceType: (students: Person[] ,type: RolllStateType | "all") => void;
+    filterStudentByAttendanceType: (students: Person[], type: RolllStateType | "all") => void;
 }
 
 export const useStore = create<StaffState>(set => ({
@@ -30,7 +30,7 @@ function getNewState(students: Person[], id: number, roll_state: RolllStateType)
 }
 
 function getFilteredByAttendance(students: Person[], roll_state: RolllStateType | "all"): Person[] {
-    if(roll_state === "all") {
+    if (roll_state === "all") {
         return [...students];
     } else {
         return [...students].filter(student => student.roll_state === roll_state);
