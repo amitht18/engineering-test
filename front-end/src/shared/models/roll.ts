@@ -10,3 +10,5 @@ export interface RollInput {
 }
 
 export type RolllStateType = "unmark" | "present" | "absent" | "late"
+
+export type SortOrder = "asc" | "desc";

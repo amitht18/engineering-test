@@ -19,7 +19,7 @@ export const StudentListTile: React.FC<Props> = ({ isRollMode, student }) => {
       </S.Content>
       {isRollMode && (
         <S.Roll>
-          <RollStateSwitcher />
+          <RollStateSwitcher initialState={student.roll_state} id={student.id} />
         </S.Roll>
       )}
     </S.Container>
