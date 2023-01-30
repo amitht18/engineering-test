@@ -1,8 +1,9 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import styled from "styled-components"
 import Button from "@material-ui/core/Button"
 import { BorderRadius, Spacing } from "shared/styles/styles"
 import { RollStateList } from "staff-app/components/roll-state/roll-state-list.component"
+import { useStore } from "state/app.state"
 
 export type ActiveRollAction = "filter" | "exit"
 interface Props {
@@ -12,6 +13,21 @@ interface Props {
 
 export const ActiveRollOverlay: React.FC<Props> = (props) => {
   const { isActive, onItemClick } = props
+  const students = useStore(state => state.students);
+  const [allStudentsCount, updateAllStudentsCount] = useState<number>(0)
+  const [presentStudentsCount, updatePresentStudentsCount] = useState<number>(0)
+  const [lateStudentsCount, updateLateStudentsCount] = useState<number>(0)
+  const [absentStudentsCount, updateAbsentStudentsCount] = useState<number>(0)
+
+  useEffect(() => {
+    updateLateStudentsCount(0);
+    updatePresentStudentsCount(0);
+    updateAbsentStudentsCount(0);
+    updateAbsentStudentsCount(students.filter((student) => student.roll_state === "absent").length);
+    updatePresentStudentsCount(students.filter((student) => student.roll_state === "present").length);
+    updateLateStudentsCount(students.filter((student) => student.roll_state === "late").length);
+    updateAllStudentsCount(students.length);
+  }, [students])
 
   return (
     <S.Overlay isActive={isActive}>
@@ -20,10 +36,10 @@ export const ActiveRollOverlay: React.FC<Props> = (props) => {
         <div>
           <RollStateList
             stateList={[
-              { type: "all", count: 0 },
-              { type: "present", count: 0 },
-              { type: "late", count: 0 },
-              { type: "absent", count: 0 },
+              { type: "all", count: allStudentsCount },
+              { type: "present", count: presentStudentsCount },
+              { type: "late", count: lateStudentsCount },
+              { type: "absent", count: absentStudentsCount },
             ]}
           />
           <div style={{ marginTop: Spacing.u6 }}>

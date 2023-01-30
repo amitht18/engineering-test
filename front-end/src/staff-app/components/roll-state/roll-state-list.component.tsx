@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { RollStateIcon } from "staff-app/components/roll-state/roll-state-icon.component"
 import { Spacing, FontWeight } from "shared/styles/styles"
 import { RolllStateType } from "shared/models/roll"
+import { useStore } from "state/app.state"
 
 interface Props {
   stateList: StateList[]
@@ -11,7 +12,11 @@ interface Props {
   size?: number
 }
 export const RollStateList: React.FC<Props> = ({ stateList, size = 14, onItemClick }) => {
+  const filterList = useStore(state => state.filterStudentByAttendanceType)
+  const students = useStore(state => state.students)
+
   const onClick = (type: ItemType) => {
+    filterList(students, type);
     if (onItemClick) {
       onItemClick(type)
     }
